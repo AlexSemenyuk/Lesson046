@@ -13,7 +13,7 @@ CREATE TABLE `Product`(
     `name` VARCHAR(255) NOT NULL,
     `description` TEXT NOT NULL,
     `technical_parameters` LONGTEXT NOT NULL,
-    `buyers_feedback_id_id` INT NULL,
+    `buyers_feedback_id` INT NULL,
     `rating` VARCHAR(255) NOT NULL
 );
 ALTER TABLE
@@ -28,9 +28,9 @@ CREATE TABLE `Buyers`(
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `last_name` VARCHAR(255) NOT NULL,
     `first_name` VARCHAR(255) NOT NULL,
-    `phone` VARCHAR(255) NOT NULL,
+    `phone_id` INT NOT NULL,
     `post_office_id` INT NOT NULL,
-    `buyers_adress` INT NULL
+    `buyers_adress_id` INT NULL
 );
 ALTER TABLE
     `Buyers` ADD PRIMARY KEY `buyers_id_primary`(`id`);
@@ -70,14 +70,22 @@ ALTER TABLE
     `Orders_Product` ADD INDEX `orders_product_orders_id_product_id_index`(`orders_id`, `product_id`);
 ALTER TABLE
     `Orders_Product` ADD PRIMARY KEY `orders_product_id_primary`(`id`);
+CREATE TABLE `Phone`(
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `phone` VARCHAR(255) NOT NULL
+);
+ALTER TABLE
+    `Phone` ADD PRIMARY KEY `phone_id_primary`(`id`);
 ALTER TABLE
     `Orders` ADD CONSTRAINT `orders_buyers_id_foreign` FOREIGN KEY(`buyers_id`) REFERENCES `Buyers`(`id`);
 ALTER TABLE
-    `Product` ADD CONSTRAINT `product_buyers_feedback_id_id_foreign` FOREIGN KEY(`buyers_feedback_id_id`) REFERENCES `Buyers_feedback`(`id`);
+    `Product` ADD CONSTRAINT `product_buyers_feedback_id_foreign` FOREIGN KEY(`buyers_feedback_id`) REFERENCES `Buyers_feedback`(`id`);
+ALTER TABLE
+    `Buyers` ADD CONSTRAINT `buyers_phone_id_foreign` FOREIGN KEY(`phone_id`) REFERENCES `Phone`(`id`);
 ALTER TABLE
     `Buyers` ADD CONSTRAINT `buyers_post_office_id_foreign` FOREIGN KEY(`post_office_id`) REFERENCES `Post_office`(`id`);
 ALTER TABLE
-    `Buyers` ADD CONSTRAINT `buyers_buyers_adress_foreign` FOREIGN KEY(`buyers_adress`) REFERENCES `Buyers_adress`(`id`);
+    `Buyers` ADD CONSTRAINT `buyers_buyers_adress_id_foreign` FOREIGN KEY(`buyers_adress_id`) REFERENCES `Buyers_adress`(`id`);
 ALTER TABLE
     `Buyers_feedback` ADD CONSTRAINT `buyers_feedback_buyers_id_foreign` FOREIGN KEY(`buyers_id`) REFERENCES `Buyers`(`id`);
 ALTER TABLE
